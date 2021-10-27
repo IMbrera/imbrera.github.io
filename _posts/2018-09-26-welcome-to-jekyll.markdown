@@ -10,7 +10,7 @@ published: true
 > Моё лицо, когда __оно заработало__
 
 ![me]({{site.baseurl}}/_posts/me.jpg)
-Фотка долго грузится [sad] надо воткнуть еще - __Тур Белогорья 2016__ ![я в желтой jersey выперся в голову пелотона]({{site.baseurl}}/_posts/iI8CMB-gm_A.jpg)
+Фотка долго грузится [sad] надо воткнуть еще - __Тур Белогорья 2016__ ![iI8CMB-gm_A]({{site.baseurl}}/_posts/iI8CMB-gm_A.jpg)
 
 Классно получилось :D теперь _скинем_ ссылку на моё веб - приложение, где можно скачать winform - [SportsPage](http://sportspage.azurewebsites.net/), который пока работает... и описан здесь - [ТыК](https://imbman.github.io/2018-10-26-SportsPage.html) , ну везде где только возможно было это описать :)
 
