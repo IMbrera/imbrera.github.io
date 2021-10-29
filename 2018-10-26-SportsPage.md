@@ -2,7 +2,6 @@
 
 ## SportsPage
 
-test
 Ручной ввод и анализ данных о своих тренировках в области велоспорта и бега. 
 Приложение взаимодействует с облачными решениями __Microsoft Azure sql server__ 
 ![metric]({{site.baseurl}}/mitric.png)
