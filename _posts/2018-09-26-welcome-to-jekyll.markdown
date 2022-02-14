@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Zabbix agent
-date: '2018-09-26 22:11:16 +0300'
+date: '2022-02-14 17:02:16 +0300'
 categories: jekyll update
 published: true
 ---
