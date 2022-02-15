@@ -15,4 +15,4 @@ Server=192.168.xxx.xxx_
 2. Элементы данных (Имя, Тип: zabbix-агент, ключ: vfs.fs.size["C:",free], интервал обновления) и др. подобные ключи для мониторинга памяти средствами агента;
 3. Триггер на обнаружение (Имя,Важность, **Выражение**).
 
-### [Создать дейтсвие](https://www.zabbix.com/documentation/current/ru/manual/config/notifications/action)
+### [Создать дейcтвие](https://www.zabbix.com/documentation/current/ru/manual/config/notifications/action)
