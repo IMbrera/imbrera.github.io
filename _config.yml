@@ -23,7 +23,7 @@ github_username:  imbrera
 
 # Build settings
 markdown: kramdown
-theme: minima
+theme: AutomaticFree
 plugins:
   - jekyll-feed
 
