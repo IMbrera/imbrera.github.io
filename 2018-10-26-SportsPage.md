@@ -1,75 +1,259 @@
-##
+<!---include(header.html)--->
 
-## SportsPage
+<script src="<!---BASE_URL--->/tinymce/tinymce.min.js"></script>
 
-Ручной ввод и анализ данных о своих тренировках в области велоспорта и бега. 
-Приложение взаимодействует с облачными решениями __Microsoft Azure sql server__ 
-![metric]({{site.baseurl}}/mitric.png)
-## База данных состоит из 6 таблиц
+<script>
 
-![logic]({{site.baseurl}}/logic.png)
-Пользователь может __создать__ или __восстановить__ доступ к аккаунт, используя простые формы приложения:
--![main]({{site.baseurl}}/Main.png)
+function onChangeService() {
 
--![reg]({{site.baseurl}}/reg.png)
+    var json = {
+        query: "uslugalist",
+        service: $('#service').val()
+    };
+        
+    $.ajax({
+        data: json,
+        url: '<!---BASE_URL--->/query.html',
+        success: function(data){
+        	$('#usluga').empty();
+        	if ("list" in data && data.list !== undefined){        		
+	 			$('#usluga').append(data.list);
+	 		} else {
+	 			$('#usluga').append('<option id="00000000-0000-0000-0000-000000000000" value="00000000-0000-0000-0000-000000000000"><!---NOT_SELECTED---></option>');
+	 		}
+            //console.log(data.list);
+        },
+        fail: function(data){
+        	$('#usluga').empty();
+        	$('#usluga').append('<option id="00000000-0000-0000-0000-000000000000" value="00000000-0000-0000-0000-000000000000"><!---NOT_SELECTED---></option>');
+            console.log(json);
+        }        
+    });
+    
+}
 
--![return]({{site.baseurl}}/back.png)
+</script>
 
-В случае ошибки - предусмотрены исключения, описывающие ее вызов.
-При удачной авторизации- пользователь попадает в главную форму приложения, где может выбрать интересующую его таблицу для внесения записей, выбрать настройки отображения элементов формы и атрибутов таблиц если они необходимы или построить и сохранить маршрут тренировок.
-![mainform]({{site.baseurl}}/image20.gif)
 
-## Конфигурирование объектов таблиц
+<div class="row">
+	<div class="col-lg-12">
+		<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"><!---FILL_FORM---></h3>
+            </div>
+            <!-- /.box-header -->
+	
+			<form id="mainform" name="mainform" enctype="multipart/form-data" method="post" action="<!---BASE_URL--->/ticket_ok.html">
+				<div class="box-body">
+				
+					<div class="form-group">
+						<label for="topic"><!---SUBJECT---><span style="color:red">&nbsp;*</span></label>
+						<input type="text" class="form-control" placeholder="<!---PLACE_HOLDER_THEME--->" id="topic" aria-describedby="topic" name="topic" placeholder="" required="true" autofocus>
+					</div>				
+                
+					<div class="form-group">
+		            	<textarea id="editor" class="textarea" placeholder="<!---PLACE_HOLDER_NEWTASK_EDITOR--->" name="editor"></textarea>
+		            </div>
+              
+					<div class="row">
+						<div class="col-lg-6">
+						<div class="form-group">
+							<label><!---SERVICE---></label>					 
+							<select class="form-control" id='service' name='service' onchange='onChangeService()'>
+							<!---SERVICE_LIST--->
+							</select>
+						</div>
+						</div>
+						
+						<div class="col-lg-6">
+						<div class="form-group">
+							<label><!---USLUGA---></label>
+							<select class="form-control" id='usluga' name='usluga' <!---USLUGA_DIABLED--->>
+							<option id="00000000-0000-0000-0000-000000000000" value="00000000-0000-0000-0000-000000000000"><!---NOT_SELECTED---></option>
+							</select>
+						</div>
+						</div>
+					</div>
+							            
+		            <div class="form-group">
+						<div class="fileinput" data-provides="fileinput">
+						  <input name="FILE_1" size="30" type="file">
+						</div><br />
+						
+						<span id="files_table_2"></span>
+						<input type="button" class="btn btn-default" value="<!---YET--->" OnClick="AddFileInput('<!---YET--->')" />
+						<input type="hidden" name="files_counter" id="files_counter" value="2" />
+					</div>
+            	
+				    		            
+				<div class="form-group">
+		          <div class="pull-right">
+		          	<input type="button" class="btn" onclick="history.back(1)" value="<!---BACK_TO_HISTORY--->" />
+		            <input type="submit" id="sumbitbtn" class="btn btn-primary" value="<!---SAVE_TICKET--->" />
+		          </div>
+		        </div>		
+		              
+				</div>
+			</form>
 
-Пользователь может отключить лишние для него компоненты: аттрибуты, не используемые пользователем или сами таблицы:
-![settings.png]({{site.baseurl}}/settings.png)
-## Горячие клавиши формы
+	    </div>                            	
+	</div>
+</div>
+        
+<script>
+formUploader = {
 
-1. Добавить тренировку - открывает форму для создания записи;
-2. Удалить тренировку - открывает форму для удаления записи;
-3. Аналитика тренировок - данная форма содержит более подробное отображение данных и предоставляет дополнительный функционал: маршрут записи (добавление и отображение),построение диаграмм по выбранному атрибуту таблицы и статистика по всем находящимся записям пользователя
-4. Редактирование маршрутов - хранение маршрутов записей
-## Создание записей 
+    prepareForm: function(form){
 
-Выбрав таблицу в форме, пользователь заходит в конфигурирование записями таблицы
-![indexbike.png]({{site.baseurl}}/indexbike.png)
+        // Каждая значимая кнопка формы при клике должна создать одноименное hidden поле,
+        // чтобы на сервер передалась информация о том, какая кнопка была кликнута
+        var allFormFields = form.getElementsByTagName('input');
+        for (var i=0; i<allFormFields.length; i++){
+            if(allFormFields[i].type == 'submit' && allFormFields[i].name){
+                allFormFields[i].onclick = function(){
+                    formUploader.createHiddenField(this);
+                }
+            }
+        }
 
-В примере ниже отображен процесс создания записи в таблицу BikeDB: 
-![create.png]({{site.baseurl}}/create.png)
-- при сохранении записи отображается ответ:
-![message.png]({{site.baseurl}}/message.png)
-конечный результат добавления записи продемонстрирован ниже:
-![add.png]({{site.baseurl}}/add.png)
-## Редактрование записей таблицы
+        // Визуализируем форму как отправляемую на сервер на событии onsubmit
+        // (в т.ч. делаем все кнопки неактивными)
+        form.onsubmit = function(){
+            formUploader.setFormLoading(form);
+        }
 
-Кликнув дважы на поле записи, программа запрашивает пользователя на процесс редактирования записи
+        // Очищаем визуализацию формы (в т.ч. делаем все кнопки вновь активными)
+        // при уходе со страницы - по глобальному событию onunload
+        window.onunload = function(){
+            formUploader.clearFormLoading(form)
+        }
+    },
 
-![editme.png]({{site.baseurl}}/editme.png)
-... далее попадаем на форму редактирования записи с последующим ответом об успешном обновлении записи
+    setFormLoading: function(form){
+        // Создаем визуализацию загрузки формы и делаем все кнопки неактивными
+        document.getElementById("sumbitbtn").disabled=true;
+    },
+	
+    clearFormLoading: function(form){
+        // Очищаем форму от визуализации загрузки и возвращаем кнопки в активное состояние
+        document.getElementById("sumbitbtn").disabled=false;
+    },
 
-![edit.png]({{site.baseurl}}/edit.png)
-В конечном результате получаем обновленную запись
+    createHiddenField: function(button){
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = button.name;
+        input.value = button.value;
+        button.parentNode.insertBefore(input, button);
+    }
+}
+</script>
 
-![bikeedit.png]({{site.baseurl}}/bikeedit.png)
+<script>
+    formUploader.prepareForm(document.getElementById('mainform'));
+</script>
 
-## Удаление записи
-Выбрав необходимую запись, пользователь кликает на кнопку  "Удалить тренировку", после чего переходит в форму для последующего подтверждения 
+<script>
+function AddFileInput()
+{
+	var counter = document.getElementById("files_counter").value;
+	var table = document.getElementById("files_table_"+counter);
 
-![delete.png]({{site.baseurl}}/delete.png)
-## Горячая клавиша "Аналитика тренировок"
-Открывается форма с более подробными данными о записях. 
+	document.getElementById("files_counter").value = ++counter;
+	table.innerHTML += '<input name="FILE_'+counter+'" size="30" type="file"><br /><span id="files_table_'+counter+'"></span>';
+}  
+</script>
 
-![mainAnalyz.png]({{site.baseurl}}/mainAnalyz.png)
-Если маршрут в записи не создан, то программа предложит создать его или выбрать существующий. 
+<!---include(footer.html)--->
 
- _Диаграммы_ - Выбрав необходимый атрибут - построится диаграмма, основанная на данных записей пользователя
+<script>
+    window.getInputContent = function()
+    {
+        return $('#editor').val();
+    };
+
+	function CheckForm()
+	{
+		var el = document.getElementsByName('topic')[0];
+		if (el.value.trim()=="") {
+			ShowMessage('Укажите тему задачи!', 'TOPIC');
+			el.focus();
+			return false;
+		} else if (getInputContent().trim()=="") {
+			ShowMessage('Заполните описание задачи!');
+			return false;
+		} else {
+			return true;
+		};	
+	};	
+</script>
+
+<script>
+(function($) {
+    $.enhanceFormsBehaviour = function() {
+        $('form').enhanceBehaviour();
+    }
+
+    $.fn.enhanceBehaviour = function() {
+        return this.each(function() {
+            var submits = $(this).find(':submit');
+            submits.click(function() {
+                var hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = this.name;
+                hidden.value = this.value;
+                this.parentNode.insertBefore(hidden, this)
+            });
+            $(this).submit(function() {
+                submits.attr("disabled", "disabled");
+            });         
+            $(window).unload(function() {
+                submits.removeAttr("disabled");
+            })
+         }); 
+    }
+})(jQuery);
+</script>
+
+<script type="text/javascript">
+  tinymce.init({
+    selector: 'textarea#editor',
+    height: 300,
+    menubar: false,
+    language: 'ru',    
+    plugins: "lists media paste image help link imagetools table",
+    toolbar: "undo redo | formatselect | bold italic underline blockquote forecolor backcolor | removeformat | bullist numlist outdent indent | link code table media paste image | help",
+    contextmenu: "link image imagetools table removeformat",
+    paste_data_images: true
+  });
+ </script>
  
-![diagram.png]({{site.baseurl}}/diagram.png)
+ > Переменные.Вставить("TITLE", ЯзыковыеДанные.NEW_TICKET);
+ЗапросСервисы = Новый Запрос();
+ЗапросСервисы.Текст =
+	"ВЫБРАТЬ
+	|	Сервисы.Ссылка КАК Ссылка,
+	|	Сервисы.Наименование КАК Наименование
+	|ИЗ
+	|	Справочник.Сервисы КАК Сервисы
+	|ГДЕ
+	|	Сервисы.ПометкаУдаления = ЛОЖЬ"
+	;
+	
+	
+Если Не УправлениеITОтделом8УФПовтИсп.ЭтоСотрудник() Тогда
+	ЗапросСервисы.Текст = ЗапросСервисы.Текст + "	И Сервисы.ТипСервиса = ЗНАЧЕНИЕ(Перечисление.ТипыСервисов.ПользовательскийСервис)"
+КонецЕсли;
+	
+ЗапросСервисы.Текст = ЗапросСервисы.Текст + " УПОРЯДОЧИТЬ ПО	Наименование";
+	
+	
+ВыборкаСервисы = ЗапросСервисы.Выполнить().Выбрать();
 
-_Статистика_- Данный раздел выводит статистические данные пользователя
+ТекстСпискаВыбора = "<option id=""00000000-0000-0000-0000-000000000000"" value=""00000000-0000-0000-0000-000000000000"">" + ЯзыковыеДанные.NOT_SELECTED + "</option>";
+Пока ВыборкаСервисы.Следующий() Цикл
+	ТекстСпискаВыбора = ТекстСпискаВыбора
+		+ СтрШаблон("<option id=""%1"" value=""%1"">%2</option>", Строка(ВыборкаСервисы.Ссылка.УникальныйИдентификатор()), ОбработатьТеги(ВыборкаСервисы.Наименование));
+КонецЦикла;
 
-![stat.png]({{site.baseurl}}/stat.png)
-## Редактор маршрутов
-Данная форма позволяет редактировать маршруты записей
-
-![trackedit.png]({{site.baseurl}}/trackedit.png)
+Переменные.Вставить("SERVICE_LIST", 	ТекстСпискаВыбора);
