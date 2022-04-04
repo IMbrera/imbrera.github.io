@@ -1,16 +1,12 @@
+## 1c
 <!---include(header.html)--->
-
 <script src="<!---BASE_URL--->/tinymce/tinymce.min.js"></script>
-
 <script>
-
 function onChangeService() {
-
     var json = {
         query: "uslugalist",
         service: $('#service').val()
-    };
-        
+    };   
     $.ajax({
         data: json,
         url: '<!---BASE_URL--->/query.html',
@@ -29,12 +25,14 @@ function onChangeService() {
             console.log(json);
         }        
     });
-    
+    function onChangeUsers() {
+     var users = {
+      
+     
+     }
+    }   
 }
-
 </script>
-
-
 <div class="row">
 	<div class="col-lg-12">
 		<div class="box box-primary">
@@ -42,19 +40,21 @@ function onChangeService() {
               <h3 class="box-title"><!---FILL_FORM---></h3>
             </div>
             <!-- /.box-header -->
-	
-			<form id="mainform" name="mainform" enctype="multipart/form-data" method="post" action="<!---BASE_URL--->/ticket_ok.html">
+				<form id="mainform" name="mainform" enctype="multipart/form-data" method="post" action="<!---BASE_URL--->/ticket_ok.html">
 				<div class="box-body">
-				
+				            
 					<div class="form-group">
 						<label for="topic"><!---SUBJECT---><span style="color:red">&nbsp;*</span></label>
 						<input type="text" class="form-control" placeholder="<!---PLACE_HOLDER_THEME--->" id="topic" aria-describedby="topic" name="topic" placeholder="" required="true" autofocus>
-					</div>				
-                
+					</div>	
+					<div class="form-group">
+					<<!---LOGIN_FIELD---> name="username" placeholder="<!---USERNAME--->" required="required" />
+    	<!---LOGIN_OPT---> 
+                  </div>
+								                     
 					<div class="form-group">
 		            	<textarea id="editor" class="textarea" placeholder="<!---PLACE_HOLDER_NEWTASK_EDITOR--->" name="editor"></textarea>
-		            </div>
-              
+		            </div>          
 					<div class="row">
 						<div class="col-lg-6">
 						<div class="form-group">
@@ -63,8 +63,7 @@ function onChangeService() {
 							<!---SERVICE_LIST--->
 							</select>
 						</div>
-						</div>
-						
+						</div>					
 						<div class="col-lg-6">
 						<div class="form-group">
 							<label><!---USLUGA---></label>
@@ -73,38 +72,29 @@ function onChangeService() {
 							</select>
 						</div>
 						</div>
-					</div>
-							            
+					</div>						            
 		            <div class="form-group">
 						<div class="fileinput" data-provides="fileinput">
 						  <input name="FILE_1" size="30" type="file">
-						</div><br />
-						
+						</div><br />					
 						<span id="files_table_2"></span>
 						<input type="button" class="btn btn-default" value="<!---YET--->" OnClick="AddFileInput('<!---YET--->')" />
 						<input type="hidden" name="files_counter" id="files_counter" value="2" />
-					</div>
-            	
-				    		            
+					</div>			    		            
 				<div class="form-group">
 		          <div class="pull-right">
 		          	<input type="button" class="btn" onclick="history.back(1)" value="<!---BACK_TO_HISTORY--->" />
 		            <input type="submit" id="sumbitbtn" class="btn btn-primary" value="<!---SAVE_TICKET--->" />
 		          </div>
-		        </div>		
-		              
-				</div>
+		        </div>			              
+				</div>  			  
 			</form>
-
 	    </div>                            	
 	</div>
-</div>
-        
+</div>    
 <script>
 formUploader = {
-
     prepareForm: function(form){
-
         // Каждая значимая кнопка формы при клике должна создать одноименное hidden поле,
         // чтобы на сервер передалась информация о том, какая кнопка была кликнута
         var allFormFields = form.getElementsByTagName('input');
@@ -228,7 +218,8 @@ function AddFileInput()
   });
  </script>
  
- > Переменные.Вставить("TITLE", ЯзыковыеДанные.NEW_TICKET);
+ <script1c>
+  Переменные.Вставить("TITLE", ЯзыковыеДанные.NEW_TICKET);
 ЗапросСервисы = Новый Запрос();
 ЗапросСервисы.Текст =
 	"ВЫБРАТЬ
@@ -239,21 +230,41 @@ function AddFileInput()
 	|ГДЕ
 	|	Сервисы.ПометкаУдаления = ЛОЖЬ"
 	;
-	
-	
 Если Не УправлениеITОтделом8УФПовтИсп.ЭтоСотрудник() Тогда
 	ЗапросСервисы.Текст = ЗапросСервисы.Текст + "	И Сервисы.ТипСервиса = ЗНАЧЕНИЕ(Перечисление.ТипыСервисов.ПользовательскийСервис)"
 КонецЕсли;
-	
 ЗапросСервисы.Текст = ЗапросСервисы.Текст + " УПОРЯДОЧИТЬ ПО	Наименование";
-	
-	
 ВыборкаСервисы = ЗапросСервисы.Выполнить().Выбрать();
-
 ТекстСпискаВыбора = "<option id=""00000000-0000-0000-0000-000000000000"" value=""00000000-0000-0000-0000-000000000000"">" + ЯзыковыеДанные.NOT_SELECTED + "</option>";
 Пока ВыборкаСервисы.Следующий() Цикл
 	ТекстСпискаВыбора = ТекстСпискаВыбора
 		+ СтрШаблон("<option id=""%1"" value=""%1"">%2</option>", Строка(ВыборкаСервисы.Ссылка.УникальныйИдентификатор()), ОбработатьТеги(ВыборкаСервисы.Наименование));
 КонецЦикла;
+Переменные.Вставить("SERVICE_LIST", 	ТекстСпискаВыбора);   
 
-Переменные.Вставить("SERVICE_LIST", 	ТекстСпискаВыбора);
+ЗапросСотрудников = Новый Запрос;
+		ЗапросСотрудников.Текст = 
+			"ВЫБРАТЬ
+			|	Сотрудники.Наименование КАК Наименование
+			|ИЗ
+			|	Справочник.Сотрудники КАК Сотрудники
+			|ГДЕ	
+			|	Сотрудники.ПометкаУдаления = ЛОЖЬ
+			|	И Сотрудники.Недействителен = ЛОЖЬ
+			|
+			|УПОРЯДОЧИТЬ ПО
+			|	Наименование";
+		
+	ВыборкаЗапроса = ЗапросСотрудников.Выполнить().Выбрать();
+	СписокСотрудников = "<datalist id=""users"">" +Символы.ПС;
+	Переменные.Вставить("LOGIN_FIELD","input list='users'");
+	Пока ВыборкаЗапроса.Следующий() Цикл
+		СотрудникИБ = ФормаСписка.НайтиПоУникальномуИдентификатору(ВыборкаЗапроса.Наименование);
+		Если Не СотрудникИБ = Неопределено Тогда
+			СписокСотрудников = Строка(СписокСотрудников) + "<option value='" + Строка(СотрудникИБ.Имя)+"' />" +Символы.ПС;
+		КонецЕсли;
+	КонецЦикла;
+	СписокСотрудников = (СписокСотрудников) + Символы.ПС;
+	Переменные.Вставить("LOGIN_OPT",СписокСотрудников +Символы.ПС + "</datalist>");   
+
+</script1c>
