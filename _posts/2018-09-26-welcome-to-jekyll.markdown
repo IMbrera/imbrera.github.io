@@ -17,13 +17,14 @@ Server=192.168.xxx.xxx_
 
 ### [Создать дейcтвие](https://www.zabbix.com/documentation/current/ru/manual/config/notifications/action)
 
-WMI 
-DNS
+> WMI
+ 
+1.DNS
 wmi.get[ROOT\CIMV2,SELECT DNSHostName FROM Win32_ComputerSystem]
-Где я? (Из описания в ПК)
+2.Где я? (Из описания в ПК)
 wmi.get[ROOT\CIMV2,SELECT Description FROM Win32_OperatingSystem]
-Наличие службы - тег (Служба DrWEB) True
+3.Наличие службы - тег (Служба DrWEB) True
 wmi.get[ROOT\CIMV2,SELECT Started FROM Win32_Service WHERE Name="DrWebEngine"]
-Учетная запись
+4.Учетная запись
 wmi.get[ROOT\CIMV2,SELECT Username FROM Win32_ComputerSystem]    
 
