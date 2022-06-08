@@ -16,3 +16,18 @@ Server=192.168.xxx.xxx_
 3. Триггер на обнаружение (Имя,Важность, **Выражение**).
 
 ### [Создать дейcтвие](https://www.zabbix.com/documentation/current/ru/manual/config/notifications/action)
+
+> WMI
+ 
+1.DNS
+wmi.get[ROOT\CIMV2,SELECT DNSHostName FROM Win32_ComputerSystem]
+
+2.Где я? (Из описания в ПК)
+wmi.get[ROOT\CIMV2,SELECT Description FROM Win32_OperatingSystem]
+
+3.Наличие службы - тег (Служба DrWEB) True
+wmi.get[ROOT\CIMV2,SELECT Started FROM Win32_Service WHERE Name="DrWebEngine"]
+
+4.Учетная запись
+wmi.get[ROOT\CIMV2,SELECT Username FROM Win32_ComputerSystem]    
+
