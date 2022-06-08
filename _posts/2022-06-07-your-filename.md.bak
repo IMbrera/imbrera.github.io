@@ -1,7 +1,5 @@
 ---
-published: true
-layout: post
-title: HTTP сервисы
+published: false
 ---
 ## HTTP сервисы 
 Чтобы не терять поддержку конфигурации: включаю "Расширение конфигурации". 
