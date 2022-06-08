@@ -14,10 +14,11 @@ title: HTTP сервисы
 Для чтения и записи в 1С, создаю внешнюю обработку, код обработки в [github](https://github.com/IMbrera/onecpractic/blob/main/json/%D0%9E%D0%B1%D0%BC%D0%B5%D0%BD/%D0%A0%D0%B5%D0%B7%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%82.txt)
 
 После публикации конфигурации - добавляю в vrdфайл (iis) строку сервиса
-> <service name="Расш1_HTTPEmployees"
+
+_service name="Расш1HTTPEmployees"
 				rootUrl="extension"
 				enable="true"
 				reuseSessions="autouse"
 				sessionMaxAge="20"
 				poolSize="10"
-				poolTimeout="5"/> >
+				poolTimeout="5"_
