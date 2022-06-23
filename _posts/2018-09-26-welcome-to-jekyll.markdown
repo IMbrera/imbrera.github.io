@@ -29,5 +29,5 @@ wmi.get[ROOT\CIMV2,SELECT Description FROM Win32_OperatingSystem]
 wmi.get[ROOT\CIMV2,SELECT Started FROM Win32_Service WHERE Name="DrWebEngine"]
 
 4.Учетная запись
-wmi.get[ROOT\CIMV2,SELECT Username FROM Win32_ComputerSystem]    
-
+wmi.get[ROOT\CIMV2,SELECT Username FROM Win32_ComputerSystem]
+![Снимок экрана 2022-06-23 151614.png]({{site.baseurl}}/images/Снимок экрана 2022-06-23 151614.png)
