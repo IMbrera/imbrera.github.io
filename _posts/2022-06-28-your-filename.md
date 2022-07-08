@@ -1,5 +1,6 @@
 ---
-published: false
+published: true
+layout: post
 ---
 ## Zabbix docker
 
