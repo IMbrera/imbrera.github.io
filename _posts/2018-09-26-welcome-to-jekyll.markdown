@@ -3,7 +3,7 @@ layout: post
 title: Zabbix agent
 date: '2022-02-14 17:02:16 +0300'
 categories: jekyll update
-published: true
+published: false
 ---
 ### Для мониторинга windows-пк средствами zabbix - агента,после его установки, нужно вспомнить о файле конфигурации "C:\Program Files\Zabbix Agent".
 _LogRemoteCommands=1
