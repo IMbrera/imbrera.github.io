@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 1CPublic
-published: true
+published: false
 ---
 ## Публикация 1с
 
