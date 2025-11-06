@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>API регистрации контрагентов ABMotors</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <style>
+    html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+    *, *:before, *:after { box-sizing: inherit; }
+    body { margin:0; background: #fafafa; }
+  </style>
+</head>
+
+<body>
+  <div id="swagger-ui"></div>
+
+  <script src="./swagger-ui-bundle.js"></script>
+  <script src="./swagger-ui-standalone-preset.js"></script>
+  <script>
+  window.onload = function() {
+    const yamlSpec = `
+openapi: 3.0.3
+info:
+  title: API регистрации контрагентов ABMotors
+  description: API для регистрации новых контрагентов
+  version: 1.0.0
+  contact:
+    name: ABMotors Ilin M
+    email: m.ilin@avto-belogorie.ru
+
+servers:
+  - url: http://178.185.225.118
+    description: Production server
+
+paths:
+  /alpha_api/hs/nona/register:
+    post:
+      summary: Регистрация физического лица
+      description: |
+        Регистрирует нового пользователя или находит существующего по номеру телефона.
+        При регистрации автоматически создается бонусная карта и начисляются приветственные баллы.
+        При входе проходит проверку наличия бонусной карты и приветственных баллых, регистрирует в случае их отсутствия
+      tags:
+        - Физические лица
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - lname
+                - fname
+                - sname
+                - birthday
+                - sex
+              properties:
+                phone:
+                  type: string
+                  description: Номер телефона для регистрации/поиска
+                  example: '78005553535'
+                  minLength: 10
+                  maxLength: 11
+                lname:
+                  type: string
+                  description: Фамилия пользователя
+                  example: "Ильин"
+                  minLength: 1
+                  maxLength: 50
+                fname:
+                  type: string
+                  description: Имя пользователя
+                  example: "Максим"
+                  minLength: 1
+                  maxLength: 50
+                sname:
+                  type: string
+                  description: Отчество пользователя
+                  example: "Сергеевич"
+                  minLength: 1
+                  maxLength: 50
+                birthday:
+                  type: string
+                  description: Дата рождения в формате ГГГГ.ММ.ДД
+                  example: "1997.03.28"
+                  pattern: '^[0-9]{4}\.[0-9]{2}\.[0-9]{2}$'
+                sex:
+                  type: string
+                  description: Пол пользователя
+                  enum:
+                    - male
+                    - female
+                  example: male
+            examples:
+              minimalData:
+                summary: Минимальные данные для регистрации
+                value:
+                  phone: "78005553535"
+                  lname: "Ильин"
+                  fname: "Максим"
+                  sname: "Сергеевич"
+                  birthday: "1997.03.28"
+                  sex: "male"
+      responses:
+        '201':
+          description: Пользователь успешно зарегистрирован
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: Флаг успешного выполнения
+                    example: true
+                  number:
+                    type: string
+                    description: Номер клиента в базе
+                    example: "12345"
+                  hasWelcomePoints:
+                    type: boolean
+                    description: Начислены ли приветственные баллы
+                    example: true
+              examples:
+                success:
+                  summary: Успешная регистрация нового пользователя
+                  value:
+                    success: true
+                    number: "12345"
+                    hasWelcomePoints: true
+        '200':
+          description: Пользователь найден в системе
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  number:
+                    type: string
+                    example: "67890"
+                  hasWelcomePoints:
+                    type: boolean
+                    example: false
+              examples:
+                existingUser:
+                  summary: Успешный вход существующего пользователя
+                  value:
+                    success: true
+                    number: "67890"
+                    hasWelcomePoints: false
+        '400':
+          description: Ошибка валидации входных данных
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Не заполнены обязательные реквизиты"
+        '503':
+          description: Серверная ошибка при обработке запроса
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Не удалось зарегистрировать контрагента на сервере!"
+    `;
+
+    const spec = jsyaml.load(yamlSpec);
+    
+    window.ui = SwaggerUIBundle({
+      spec: spec,
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      plugins: [
+        SwaggerUIBundle.plugins.DownloadUrl
+      ],
+      layout: "StandaloneLayout",
+      supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
+      validatorUrl: null
+    });
+  }
+  </script>
+</body>
+</html>
